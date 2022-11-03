@@ -1,6 +1,7 @@
 import React from 'react'
 import classes from "./Filter.module.css";
-import MultiSelect from "../Utils/Multi-Select";
+import MultiSelect from "../Utils/Dropdown/Multi-Select";
+import SingleSelect from "../Utils/Dropdown/Single-Select";
 import CalendarPicker from '../Utils/DateRange';
 
 const insuranceCategories = [
@@ -82,24 +83,59 @@ const paymentTypes = [
         value: 'an'
     }
 ];
+const insuranceOptions = [
+    {
+        label: 'Basic',
+        value: '1'
+    },
+    {
+        label: 'Standard',
+        value: '2'
+    },
+    {
+        label: 'Ultimate',
+        value: '3'
+    },
+    {
+        label: 'Custom',
+        value: '4'
+    }
+];
+
+const customCoverageOptions = [
+    {
+        label: '$500000',
+        value: 500000
+    },
+    {
+        label: '$1000000',
+        value: 1000000
+    }
+];
 export default function Filter() {
     const [fromPrice, setFromPrice] = React.useState(1000);
     const [toPrice, setToPrice] = React.useState(10000);
     const [paymentType, setPaymentType] = React.useState('ot');
 
+
     return (
         <div className={classes.Filter}>
             <h1 className={classes.FilterHeader}>Filters</h1>
             <div className={classes.InsuranceTypes}>
-                <MultiSelect options={insuranceCategories} placeholder={
+                <SingleSelect options={insuranceCategories} placeholder={
                     <div className={classes.Placeholder}>
-                        Select Insurance types you're looking for
+                        Insurance Types
                     </div>
                 } />
                 <CalendarPicker />
                 <MultiSelect options={countries} placeholder={
                     <div className={classes.Placeholder}>
-                        Select Insurance locations
+                        Insurance locations
+                    </div>
+                } />
+                <SingleSelect options={insuranceOptions} placeholder={
+                    <div className={classes.Placeholder}>
+                        Insurance Package
                     </div>
                 } />
                 <div className={classes.PriceRangePicker}>
@@ -134,7 +170,6 @@ export default function Filter() {
                             value={fromPrice}
                             onChange={e => setFromPrice(+e.target.value)} />
                     </div>
-                    <br />
                     <div className={classes.PriceIndicator}>
                         <label className={classes.CurrencyLabel}>
                             Max Amount ($)
@@ -145,6 +180,11 @@ export default function Filter() {
                             onChange={e => setToPrice(+e.target.value)} />
                     </div>
                 </div>
+
+                <button className={classes.Button}>
+                    Create My Custom Combination
+                </button>
+
             </div>
         </div>
     )

@@ -1,0 +1,10 @@
+.SelectContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.SelectLabel {
+  font-size: 0.8rem;
+  font-weight: 400;
+}
