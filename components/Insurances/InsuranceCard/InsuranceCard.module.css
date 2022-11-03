@@ -1,0 +1,113 @@
+.InsuranceCard {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -4px 4px 10px 7px rgba(0, 0, 0, 0.25);
+  justify-content: space-between;
+  border-radius: 0.6rem;
+}
+.InsuranceCard:nth-child(2n) {
+  background-color: var(--chubb-yellow);
+}
+.InsuranceCard:nth-child(2n + 1) {
+  background-color: #fff;
+}
+.InsuranceName {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.CoverageDetails {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.PremiumBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.PremiumAndPaymentDetails {
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+}
+.PremiumFrequency,
+.PremiumContent {
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+}
+
+.InsuranceDetails {
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+}
+.ActionCenter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.CoreIncluded {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.Active {
+  color: green;
+  font-size: 1rem;
+  margin-top: 0.15rem;
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+}
+.InActive {
+  color: #ccc;
+  font-size: 1rem;
+  margin-top: 0.15rem;
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+}
+
+.InsuranceCard:nth-child(2n + 1) .Button {
+  padding: 0.4rem;
+  background-color: var(--chubb-yellow);
+  border: 1px solid black;
+  cursor: pointer;
+  transition: 0.3s ease-in;
+  outline: none;
+  font-size: 1rem;
+}
+.InsuranceCard:nth-child(2n) .Button {
+  padding: 0.4rem;
+  background-color: #fff;
+  border: 1px solid #fff;
+  cursor: pointer;
+  transition: 0.3s ease-in;
+  outline: none;
+  font-size: 1rem;
+}
+
+.Button:hover {
+  scale: 0.96;
+}
+
+.Label {
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  font-weight: 400;
+}
+.ButtonGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
