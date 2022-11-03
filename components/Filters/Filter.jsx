@@ -3,6 +3,8 @@ import classes from "./Filter.module.css";
 import MultiSelect from "../Utils/Dropdown/Multi-Select";
 import SingleSelect from "../Utils/Dropdown/Single-Select";
 import CalendarPicker from '../Utils/DateRange';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDates, setFromPrice, toggleOpen, setPaymentType, setToPrice, setType, setLocation, setInsurancePackage } from '../../redux/slices/filter.slices';
 
 const insuranceCategories = [
     {
@@ -113,31 +115,52 @@ const customCoverageOptions = [
     }
 ];
 export default function Filter() {
-    const [fromPrice, setFromPrice] = React.useState(1000);
-    const [toPrice, setToPrice] = React.useState(10000);
-    const [paymentType, setPaymentType] = React.useState('ot');
-
-
+    const { minAmount,
+        maxAmount,
+        paymentType,
+        type,
+        calendarOpen,
+        startDate,
+        endDate,
+        location,
+        insurancePackage
+    } = useSelector(state => state.filter);
+    const dispatch = useDispatch();
     return (
         <div className={classes.Filter}>
             <h1 className={classes.FilterHeader}>Filters</h1>
             <div className={classes.InsuranceTypes}>
                 <SingleSelect options={insuranceCategories} placeholder={
                     <div className={classes.Placeholder}>
-                        Insurance Types
+                        Insurance Type
                     </div>
-                } />
-                <CalendarPicker />
-                <MultiSelect options={countries} placeholder={
+                }
+                    onChangeHandler={value => dispatch(setType(value))}
+                    value={type}
+                />
+                <CalendarPicker
+                    calendarOpen={calendarOpen}
+                    toggleOpen={() => dispatch(toggleOpen())}
+                    startDate={startDate}
+                    endDate={endDate}
+                    onChangeHandler={(dates) => dispatch(setDates(dates))}
+                />
+                <SingleSelect options={countries} placeholder={
                     <div className={classes.Placeholder}>
                         Insurance locations
                     </div>
-                } />
+                }
+                    onChangeHandler={value => dispatch(setLocation(value))}
+                    value={location}
+                />
                 <SingleSelect options={insuranceOptions} placeholder={
                     <div className={classes.Placeholder}>
                         Insurance Package
                     </div>
-                } />
+                }
+                    value={insurancePackage}
+                    onChangeHandler={value => dispatch(setInsurancePackage(value))}
+                />
                 <div className={classes.PriceRangePicker}>
                     <h4 className={classes.PriceRangeHeader}>
                         Payment Type
@@ -147,11 +170,11 @@ export default function Filter() {
                             paymentTypes.map(
                                 item => <ul
                                     className={
-                                        item.value === paymentType ?
+                                        item.value === paymentType.value ?
                                             classes.ActiveLabel :
                                             classes.InActiveLabel}
                                     key={item.value}
-                                    onClick={() => setPaymentType(item.value)}
+                                    onClick={() => dispatch(setPaymentType(item))}
                                 >
                                     {item.label}
                                 </ul>)
@@ -167,8 +190,8 @@ export default function Filter() {
                         </label>
                         <input type='number'
                             className={classes.InputBox}
-                            value={fromPrice}
-                            onChange={e => setFromPrice(+e.target.value)} />
+                            value={minAmount}
+                            onChange={e => dispatch(setFromPrice(+e.target.value))} />
                     </div>
                     <div className={classes.PriceIndicator}>
                         <label className={classes.CurrencyLabel}>
@@ -176,8 +199,8 @@ export default function Filter() {
                         </label>
                         <input type='number'
                             className={classes.InputBox}
-                            value={toPrice}
-                            onChange={e => setToPrice(+e.target.value)} />
+                            value={maxAmount}
+                            onChange={e => dispatch(setToPrice(+e.target.value))} />
                     </div>
                 </div>
 

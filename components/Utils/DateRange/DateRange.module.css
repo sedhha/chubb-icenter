@@ -1,8 +1,6 @@
-.Date {
-  position: relative;
-}
 .DateViewer {
   position: absolute;
+  z-index: 10;
 }
 .Calendar {
   display: flex;
