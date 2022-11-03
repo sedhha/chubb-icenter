@@ -127,7 +127,7 @@ export default function Filter() {
 
                     <div className={classes.PriceIndicator}>
                         <label className={classes.CurrencyLabel}>
-                            Minimum Amount ($)
+                            Min Amount ($)
                         </label>
                         <input type='number'
                             className={classes.InputBox}
@@ -137,7 +137,7 @@ export default function Filter() {
                     <br />
                     <div className={classes.PriceIndicator}>
                         <label className={classes.CurrencyLabel}>
-                            Maximum Amount ($)
+                            Max Amount ($)
                         </label>
                         <input type='number'
                             className={classes.InputBox}
