@@ -99,9 +99,13 @@ const insuranceOptions = [
         value: '3'
     },
     {
-        label: 'Custom',
+        label: 'Daily',
         value: '4'
-    }
+    },
+    {
+        label: 'Custom',
+        value: '5'
+    },
 ];
 
 const customCoverageOptions = [
@@ -128,7 +132,10 @@ export default function Filter() {
     const dispatch = useDispatch();
     return (
         <div className={classes.Filter}>
-            <h1 className={classes.FilterHeader}>Filters</h1>
+            <div className={classes.Apply}>
+                <h1 className={classes.FilterHeader}>Filters</h1>
+                <button className={classes.ButtonSmall}>Apply Filters</button>
+            </div>
             <div className={classes.InsuranceTypes}>
                 <SingleSelect options={insuranceCategories} placeholder={
                     <div className={classes.Placeholder}>

@@ -121,3 +121,24 @@
 .Button:hover {
   scale: 0.96;
 }
+
+.Apply {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ButtonSmall {
+  padding: 0.4rem;
+  background-color: #fff;
+  border: 1px solid #fff;
+  cursor: pointer;
+  transition: 0.3s ease-in;
+  outline: none;
+  font-size: 1rem;
+}
+
+.ButtonSmall:hover {
+  scale: 0.96;
+}
