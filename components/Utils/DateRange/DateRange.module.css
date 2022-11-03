@@ -1,0 +1,26 @@
+.Date {
+  position: relative;
+}
+.DateViewer {
+  position: absolute;
+}
+.Calendar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.Calendar h4 {
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+}
+
+.calendarOpen {
+  color: var(--special-blue);
+  cursor: pointer;
+}
+.calendarClosed {
+  color: white;
+  cursor: pointer;
+}

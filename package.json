@@ -1,0 +1,20 @@
+{
+  "name": "i-center",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "date-fns": "^2.29.3",
+    "next": "13.0.1",
+    "react": "18.2.0",
+    "react-date-range": "^1.4.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.6.0",
+    "react-select": "^5.6.0"
+  }
+}

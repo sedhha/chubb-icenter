@@ -1,0 +1,52 @@
+.Header {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  padding: 1.2rem;
+  height: var(--header-height);
+  justify-content: space-between;
+  background: radial-gradient(
+        circle at 100% 100%,
+        #ffffff 0,
+        #ffffff 3px,
+        #ffb617 3px
+      )
+      0% 0%/8px 8px no-repeat,
+    radial-gradient(circle at 0 100%, #ffffff 0, #ffffff 3px, transparent 3px)
+      100% 0%/8px 8px no-repeat,
+    radial-gradient(circle at 100% 0, #ffffff 0, #ffffff 3px, transparent 3px)
+      0% 100%/8px 8px no-repeat,
+    radial-gradient(circle at 0 0, #ffffff 0, #ffffff 3px, transparent 3px) 100%
+      100%/8px 8px no-repeat,
+    linear-gradient(#ffffff, #ffffff) 50% 50% / calc(100% - 10px)
+      calc(100% - 16px) no-repeat,
+    linear-gradient(#ffffff, #ffffff) 50% 50% / calc(100% - 16px)
+      calc(100% - 10px) no-repeat,
+    linear-gradient(
+        34deg,
+        rgba(156, 35, 245, 0.73) 0%,
+        #eec618 28.386%,
+        #ed1ea4 28.386%,
+        #b911d5 62.281%,
+        transparent 100%
+      )
+      repeat-y,
+    linear-gradient(131deg, #e5442e 0%, #e12680 47.776%, #fc1c9c 100%);
+  box-sizing: border-box;
+}
+
+.Logo {
+  width: auto;
+  height: 2vw;
+  vertical-align: middle;
+  border-style: none;
+  box-sizing: border-box;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.HeadTitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.8rem;
+  color: #0072bb;
+  letter-spacing: 0.1em;
+}
