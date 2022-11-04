@@ -118,11 +118,10 @@ const dummyCoveragePricing = [
 export default function Card({
     insuranceName,
     insuranceType,
-    coverageAmount,
     frequency,
     premiumTax,
     premiumAmount,
-    coreIncluded,
+    premiumTotal,
     coverage_amounts,
     coverage_pricing,
     for_type,
@@ -191,7 +190,7 @@ export default function Card({
                 </div>
                 <div className={classes.DiscountContainer}>
                     <label className={classes.LabelB}>Total:</label>
-                    <label className={classes.Label}>{`S$${(premiumAmount ?? 12.00) + (premiumTax ?? 0.20)}`}</label>
+                    <label className={classes.Label}>{`S$${(premiumTotal ?? '12.20')}`}</label>
                 </div>
             </div>
             {cPricings.length !== 0 &&
@@ -216,10 +215,6 @@ export default function Card({
             }
 
             <div className={classes.ActionCenter}>
-                <div className={classes.CoreIncluded}>
-                    {CheckMark(coreIncluded)}
-                    <label className={classes.Label}>Core Included</label>
-                </div>
                 <div className={classes.CoreIncluded}>
                     {CheckMark(selfIncluded)}
                     <label className={classes.Label}>Self</label>

@@ -7,53 +7,48 @@ export const getCampaignsFromFilters = async ({
     minAmount,
     maxAmount
 }) => {
+    // TODO: Type is expected to be as string
     const summaryPromise = getSummary({ type });
     const offersPromise = getOffers({ type });
     const [summaryResult, offersResult] = await Promise.all([
         summaryPromise,
         offersPromise
     ]).then(data => data);
+    const cards = [];
+    const insurancePackageFilters = insurancePackage.split(",");
+    const offersMap = {};
+    offersResult.forEach(entity => {
+        const { offer_pricing } = entity;
+        offer_pricing.forEach(element => {
+            offersMap[element.offer.name] = JSON.parse(JSON.stringify(element));
+        });
+    })
 
-    const { offers, name } = offersResult;
-    const filteredOffers = offers?.reduce((acc, curr) => {
-        if (curr?.name === insurancePackage.label)
-            acc[curr.name] = curr;
-        return acc;
-    }, {}) ?? {};
-    const { payment_frequency, offer_pricing } = summaryResult;
+    summaryResult.offers.forEach(element => {
+        if (insurancePackageFilters.includes(element.name)
+            && offersMap[element.name].cost.total >= minAmount
+            && offersMap[element.name].cost.total <= maxAmount
+        ) {
+            cards.push({
+                name: summaryResult.name,
+                type: element.name,
+                coverage_amounts: JSON.parse(JSON.stringify(element.coverages)),
 
-    const filteredSummaries = offer_pricing?.reduce((acc, curr) => {
-        if (
-            curr?.offer?.name === insurancePackage.label
-            &&
-            curr?.cost?.total >= minAmount
-            &&
-            curr?.cost?.total <= maxAmount
-        )
-            acc[curr.offer.name] = curr;
-        return curr;
-    }, {}) ?? {};
+                frequency: offersMap[element.name].offer.payment_frequency,
+                discount: offersMap[element.name].offer.discount,
+                for_type: offersMap[element.name].offer.for_type,
+                premiumAmount: offersMap[element.name].cost.premium,
+                premiumTax: offersMap[element.name].cost.tax,
+                premiumTotal: offersMap[element.name].cost.total,
+                coverage_pricing: JSON.parse(JSON.stringify(offersMap[element.name].coverage_pricing))
 
-    const mergedResults = [];
-
-    Object.keys(filteredSummaries).forEach(key => {
-        const summary = filteredSummaries[key];
-        if (filteredOffers[key]) {
-            const result = {
-                insuranceName: summary.name,
-                insuranceType: insurancePackage.label,
-                coverageAmount: 0
-            };
-
+            });
         }
     });
-
-
-
-
+    return cards;
 
 }
-export const getSummary = async ({ type }) => {
+const getSummary = async ({ type }) => {
     const cmp = `web-sg-${type}`
     const token = await chuggVariables.token
     return fetch(process.env.CHUGG_CAMPAIGN_SUMMARY_ENDPOINT, {
@@ -78,7 +73,7 @@ export const getSummary = async ({ type }) => {
     })
 }
 
-export const getOffers = async ({ type }) => {
+const getOffers = async ({ type }) => {
     const cmp = `web-sg-${type}`
     const token = await chuggVariables.token
     return fetch(
