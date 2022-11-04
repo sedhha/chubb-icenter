@@ -30,8 +30,8 @@ export const getCampaignsFromFilters = async ({
             && offersMap[element.name].cost.total <= maxAmount
         ) {
             cards.push({
-                name: summaryResult.name,
-                type: element.name,
+                insuranceName: summaryResult.name,
+                insuranceType: element.name,
                 coverage_amounts: JSON.parse(JSON.stringify(element.coverages)),
 
                 frequency: offersMap[element.name].offer.payment_frequency,

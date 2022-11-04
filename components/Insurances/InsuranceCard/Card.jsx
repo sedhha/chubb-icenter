@@ -115,6 +115,13 @@ const dummyCoveragePricing = [
         }
     }
 ]
+
+const frequencyMap = {
+    12: 'Monthly',
+    4: 'Quarterly',
+    1: 'Anually',
+    100: 'One Time'
+};
 export default function Card({
     insuranceName,
     insuranceType,
@@ -127,7 +134,8 @@ export default function Card({
     for_type,
     discount
 }) {
-    const cAmounts = coverage_amounts ?? [...dummyCAmounts];
+    const cAmounts = coverage_amounts.coverage_amounts ?? [...dummyCAmounts];
+    console.log("Coverage amounts = ", coverage_amounts)
     const cPricings = coverage_pricing ?? [...dummyCoveragePricing];
     const forTypeLower = for_type?.toLowerCase() ?? '';
     const familyIncluded = forTypeLower.includes("family");
@@ -176,17 +184,17 @@ export default function Card({
             <div className={classes.PremiumBox}>
                 <div className={classes.DiscountContainer}>
                     <label className={classes.LabelB}>Frequency:</label>
-                    <label className={classes.Label}>{frequency ?? 'Monthly'}</label>
+                    <label className={classes.Label}>{frequencyMap[frequency] ?? 'Monthly'}</label>
                 </div>
                 <div className={classes.DiscountContainer}>
                     <label className={classes.LabelB}>Amount:</label>
-                    <label className={classes.Label}>{premiumAmount ?? 'S$12.00'}</label>
+                    <label className={classes.Label}>{`S$${premiumAmount ?? '10.00'}`}</label>
                 </div>
             </div>
             <div className={classes.PremiumBox}>
                 <div className={classes.DiscountContainer}>
                     <label className={classes.LabelB}>Tax:</label>
-                    <label className={classes.Label}>{premiumTax ?? 'S$0.20'}</label>
+                    <label className={classes.Label}>{`S$${premiumTax ?? '10.20'}`}</label>
                 </div>
                 <div className={classes.DiscountContainer}>
                     <label className={classes.LabelB}>Total:</label>

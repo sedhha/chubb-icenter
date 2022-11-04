@@ -25,3 +25,24 @@
   background-color: #ccc; /* color of the scroll thumb */
   border: 3px solid #ccc; /* creates padding around scroll thumb */
 }
+.NoResults {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: absolute;
+  height: 90%;
+  width: 90%;
+  gap: 1rem;
+}
+
+.NoResult {
+  width: 40vw;
+  z-index: 2;
+}
+
+.Label {
+  font-size: 2rem;
+  font-family: 'Raleway', sans-serif;
+}

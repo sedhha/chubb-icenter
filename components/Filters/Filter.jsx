@@ -4,7 +4,7 @@ import MultiSelect from "../Utils/Dropdown/Multi-Select";
 import SingleSelect from "../Utils/Dropdown/Single-Select";
 import CalendarPicker from '../Utils/DateRange';
 import { useDispatch, useSelector } from 'react-redux';
-import { setDates, setFromPrice, toggleOpen, setPaymentType, setToPrice, setType, setLocation, setInsurancePackage } from '../../redux/slices/filter.slices';
+import { setDates, setFromPrice, toggleOpen, setPaymentType, setToPrice, setType, setLocation, setInsurancePackage, fetchOffersByFilter } from '../../redux/slices/filter.slices';
 
 const insuranceCategories = [
     {
@@ -102,21 +102,6 @@ const insuranceOptions = [
         label: 'Daily',
         value: '4'
     },
-    {
-        label: 'Custom',
-        value: '5'
-    },
-];
-
-const customCoverageOptions = [
-    {
-        label: '$500000',
-        value: 500000
-    },
-    {
-        label: '$1000000',
-        value: 1000000
-    }
 ];
 export default function Filter() {
     const { minAmount,
@@ -134,7 +119,7 @@ export default function Filter() {
         <div className={classes.Filter}>
             <div className={classes.Apply}>
                 <h1 className={classes.FilterHeader}>Filters</h1>
-                <button className={classes.ButtonSmall}>Apply Filters</button>
+                <button className={classes.ButtonSmall} onClick={() => dispatch(fetchOffersByFilter())}>Apply Filters</button>
             </div>
             <div className={classes.InsuranceTypes}>
                 <SingleSelect options={insuranceCategories} placeholder={
@@ -160,7 +145,7 @@ export default function Filter() {
                     onChangeHandler={value => dispatch(setLocation(value))}
                     value={location}
                 />
-                <SingleSelect options={insuranceOptions} placeholder={
+                <MultiSelect options={insuranceOptions} placeholder={
                     <div className={classes.Placeholder}>
                         Insurance Package
                     </div>

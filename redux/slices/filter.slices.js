@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { setCards } from './cards.slice'
 
 const initialState = {
     type: {
@@ -12,18 +13,40 @@ const initialState = {
         label: 'Singapore',
         value: 'sg',
     },
-    insurancePackage: {
+    insurancePackage: [{
         label: 'Basic',
         value: '1'
-    },
+    }, {
+        label: 'Standard',
+        value: '2'
+    }, {
+        label: 'Ultimate',
+        value: '3'
+    }],
     paymentType: {
         label: 'One Time',
         value: 'ot'
     },
     minAmount: 10,
-    maxAmount: 100,
+    maxAmount: 1000,
     loading: false,
 }
+
+export const fetchOffersByFilter = createAsyncThunk('filters/fetchOffers',
+    async (_, { getState, dispatch }) => {
+        dispatch(setLoading(true))
+        const { type, minAmount, maxAmount, insurancePackage } = getState().filter
+        const insString = insurancePackage.map(element => element.label).join(',')
+        const uri = `/api/hello?id=${type.value}&insurancePackage=${insString}&minAmount=${minAmount}&maxAmount=${maxAmount}`
+        console.log(uri)
+        const data = await fetch(uri).then(
+            res => res.json().then(
+                data => data))
+        console.log("Data = ", data)
+        dispatch(setLoading(false))
+        dispatch(setCards(data))
+
+    })
 
 export const filterSlice = createSlice({
     name: 'filterSlice',
@@ -36,7 +59,7 @@ export const filterSlice = createSlice({
             state.location = { ...action.payload }
         },
         setInsurancePackage: (state, action) => {
-            state.insurancePackage = { ...action.payload }
+            state.insurancePackage = [...action.payload]
         },
         setPaymentType: (state, action) => {
             state.paymentType = { ...action.payload }
@@ -53,6 +76,9 @@ export const filterSlice = createSlice({
         setDates: (state, action) => {
             state.startDate = action.payload.startDate
             state.endDate = action.payload.endDate
+        },
+        setLoading: (state, action) => {
+            state.loading = action.payload
         }
     },
 })
@@ -65,7 +91,8 @@ export const {
     setFromPrice,
     setToPrice,
     toggleOpen,
-    setDates
+    setDates,
+    setLoading
 } = filterSlice.actions;
 
 
