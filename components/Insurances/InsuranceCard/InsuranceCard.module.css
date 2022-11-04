@@ -5,11 +5,7 @@
   box-shadow: -4px 4px 10px 7px rgba(0, 0, 0, 0.25);
   justify-content: space-between;
   border-radius: 0.6rem;
-}
-.InsuranceCard:nth-child(2n) {
-  background-color: var(--chubb-yellow);
-}
-.InsuranceCard:nth-child(2n + 1) {
+  gap: 0.5rem;
   background-color: #fff;
 }
 .InsuranceName {
@@ -26,11 +22,12 @@
 
 .PremiumBox {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 .PremiumAndPaymentDetails {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 500;
   padding: 0;
   margin: 0;
@@ -58,8 +55,9 @@
 .CoreIncluded {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.1rem;
 }
+
 .Active {
   color: green;
   font-size: 1rem;
@@ -69,45 +67,88 @@
   margin: 0;
 }
 .InActive {
-  color: #ccc;
-  font-size: 1rem;
-  margin-top: 0.15rem;
+  color: red;
+  font-size: 0.8rem;
   font-weight: 400;
   padding: 0;
   margin: 0;
 }
-
-.InsuranceCard:nth-child(2n + 1) .Button {
-  padding: 0.4rem;
-  background-color: var(--chubb-yellow);
-  border: 1px solid black;
-  cursor: pointer;
-  transition: 0.3s ease-in;
-  outline: none;
-  font-size: 1rem;
+.Active,
+.InActive,
+.Label,
+.LabelB {
+  font-size: 0.8rem;
 }
-.InsuranceCard:nth-child(2n) .Button {
+
+.InsuranceCard .Button {
   padding: 0.4rem;
   background-color: #fff;
-  border: 1px solid #fff;
   cursor: pointer;
   transition: 0.3s ease-in;
   outline: none;
   font-size: 1rem;
+  border: 1.5px solid black;
 }
 
 .Button:hover {
   scale: 0.96;
+  background-color: var(--chubb-yellow);
 }
 
-.Label {
+.Label,
+.LabelB {
   margin: 0;
   padding: 0;
-  font-size: 1rem;
   font-weight: 400;
 }
+.LabelB {
+  font-weight: 500;
+}
 .ButtonGroup {
+  margin-top: 0.5rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.CoverageAmount {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.CoverageAmount td,
+.CoverageAmount th {
+  border: 1px solid #ddd;
+  padding: 0.2rem;
+}
+
+.CoverageAmount tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+.CoverageAmount tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+.CoverageAmount tr:hover {
+  background-color: #ddd;
+}
+
+.CoverageAmount th {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
+  font-size: 0.9rem;
+}
+.CoverageAmount td {
+  font-size: 0.8rem;
+}
+
+.DiscountContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }

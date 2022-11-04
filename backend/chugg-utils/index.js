@@ -17,7 +17,6 @@ const chuggVariables = {
                 this.expiresTime = (+newToken.expires_on) * 1000
                 this.bearerToken = newToken.access_token
             }
-            console.log("Reaches here")
             resolve(this.bearerToken)
         })
     }
