@@ -1,7 +1,8 @@
 import React from 'react'
 import classes from "./InsuranceCard.module.css"
 import { ImCross, ImCheckmark } from "react-icons/im"
-
+import { useDispatch } from 'react-redux';
+import { setShowTerms, setTempTerms, setTempBenefits, setShowPurchase } from '../../../redux/slices/custom.slices';
 const CheckMark = (enabled) => enabled ? <ImCheckmark className={classes.Active} /> : <ImCross className={classes.InActive} />
 const dummyCAmounts = [
     {
@@ -131,15 +132,17 @@ export default function Card({
     premiumTotal,
     coverage_amounts,
     coverage_pricing,
+    coverage_details,
+    benefits,
     for_type,
     discount
 }) {
     const cAmounts = coverage_amounts.coverage_amounts ?? [...dummyCAmounts];
-    console.log("Coverage amounts = ", coverage_amounts)
     const cPricings = coverage_pricing ?? [...dummyCoveragePricing];
     const forTypeLower = for_type?.toLowerCase() ?? '';
     const familyIncluded = forTypeLower.includes("family");
     const selfIncluded = forTypeLower.includes("main");
+    const dispatch = useDispatch();
     return (
         <div className={classes.InsuranceCard}>
             <h1 className={classes.InsuranceName}>Name: {insuranceName ?? 'Business'}</h1>
@@ -234,8 +237,13 @@ export default function Card({
 
             </div>
             <div className={classes.ButtonGroup}>
-                <button className={classes.Button}>Terms</button>
-                <button className={classes.Button}>Purchase</button>
+                <button className={classes.Button} onClick={() => {
+                    dispatch(setTempTerms(coverage_details));
+                    dispatch(setTempBenefits(benefits));
+                    dispatch(setShowTerms(true));
+
+                }}>Terms</button>
+                <button className={classes.Button} onClick={() => dispatch(setShowPurchase(true))}>Purchase</button>
             </div>
         </div>
     )

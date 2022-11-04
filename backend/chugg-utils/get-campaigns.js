@@ -1,5 +1,12 @@
 import fetch from "node-fetch";
 import { chuggVariables } from ".";
+import { tempCache } from "../cache/Cache";
+
+const dependentMap = {
+    'Basic': '1',
+    'Standard': '2',
+    'Ultimate': '3'
+};
 
 export const getCampaignsFromFilters = async ({
     type,
@@ -7,16 +14,29 @@ export const getCampaignsFromFilters = async ({
     minAmount,
     maxAmount
 }) => {
-    // TODO: Type is expected to be as string
+    const resultFromCache = tempCache.getFromCache({
+        type,
+        insurancePackage,
+        minAmount,
+        maxAmount
+    });
+    if (resultFromCache) {
+        return resultFromCache;
+    }
     const summaryPromise = getSummary({ type });
     const offersPromise = getOffers({ type });
-    const [summaryResult, offersResult] = await Promise.all([
+    const disclosurePromise = getDisclosures({ type });
+    const [summaryResult, offersResult, disclosureResult] = await Promise.all([
         summaryPromise,
-        offersPromise
+        offersPromise,
+        disclosurePromise
     ]).then(data => data);
     const cards = [];
     const insurancePackageFilters = insurancePackage.split(",");
     const offersMap = {};
+    const coverageDetailsMap = {};
+    const benefitsMap = {};
+
     offersResult.forEach(entity => {
         const { offer_pricing } = entity;
         offer_pricing.forEach(element => {
@@ -24,11 +44,32 @@ export const getCampaignsFromFilters = async ({
         });
     })
 
+
+    offersResult.forEach(entity => {
+        const { coverage_details } = entity;
+        coverage_details.forEach(element => {
+            coverageDetailsMap[element.coverage_id] = JSON.parse(JSON.stringify(element));
+        });
+    })
+
+    offersResult.forEach(entity => {
+        const { benefits: { data: { benefits } } } = entity;
+        benefits.forEach(element => {
+            benefitsMap[`${element.offer_id}__${element.coverage_id}`] = JSON.parse(JSON.stringify(element));
+        });
+    })
+
+
     summaryResult.offers.forEach(element => {
         if (insurancePackageFilters.includes(element.name)
-            && offersMap[element.name].cost.total >= minAmount
-            && offersMap[element.name].cost.total <= maxAmount
+            && offersMap[element.name].cost.total >= Math.floor(minAmount)
+            && offersMap[element.name].cost.total <= Math.ceil(maxAmount)
         ) {
+            const coverageDetails = offersMap[element.name].coverage_pricing.map(element => coverageDetailsMap[element.coverage.coverage_id])
+            const benefitsDetails = offersMap[element.name].coverage_pricing.map(item => {
+                const key = `${dependentMap[element.name]}__${item.coverage.coverage_id}`
+                return benefitsMap[key]
+            })
             cards.push({
                 insuranceName: summaryResult.name,
                 insuranceType: element.name,
@@ -40,12 +81,19 @@ export const getCampaignsFromFilters = async ({
                 premiumAmount: offersMap[element.name].cost.premium,
                 premiumTax: offersMap[element.name].cost.tax,
                 premiumTotal: offersMap[element.name].cost.total,
-                coverage_pricing: JSON.parse(JSON.stringify(offersMap[element.name].coverage_pricing))
-
+                coverage_pricing: JSON.parse(JSON.stringify(offersMap[element.name].coverage_pricing)),
+                coverage_details: coverageDetails,
+                benefits: benefitsDetails
             });
         }
     });
-    return cards;
+    tempCache.addToCache({
+        result: { cards, disclosureResult }, type,
+        insurancePackage,
+        minAmount,
+        maxAmount
+    });
+    return { cards, disclosureResult };
 
 }
 const getSummary = async ({ type }) => {
@@ -87,6 +135,32 @@ const getOffers = async ({ type }) => {
             'partner': 'partner-company',
             'product': 'demo',
             'campaign': cmp,
+            'Authorization': `Bearer ${token}`
+        }
+    }).then(res => res.json().then(data => data).catch(err => {
+        console.log("Error Occured = ", err.message)
+        return { error: err.message }
+    })).catch(error => {
+        console.log("Error Occured <> = ", { message: error.message })
+        return { error: error.message }
+    })
+}
+
+export const getDisclosures = async ({ type }) => {
+    const cmp = `web-sg-${type}`
+    const token = await chuggVariables.token
+    return fetch(
+        process.env.CHUGG_DISCLOSURES_ENDPOINT, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Ocp-Apim-Subscription-Key': process.env.CHUGG_OCP_APIM_SUBSCRIPTION_KEY,
+            'apiVersion': '1',
+            'country': 'sg',
+            'partner': 'partner-company',
+            'product': 'demo',
+            'campaign': cmp,
+            'campaign_id': cmp,
             'Authorization': `Bearer ${token}`
         }
     }).then(res => res.json().then(data => data).catch(err => {

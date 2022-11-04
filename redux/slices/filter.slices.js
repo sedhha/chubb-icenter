@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { setCards } from './cards.slice'
+import { setDisclosures } from './custom.slices'
 
 const initialState = {
     type: {
@@ -38,13 +39,12 @@ export const fetchOffersByFilter = createAsyncThunk('filters/fetchOffers',
         const { type, minAmount, maxAmount, insurancePackage } = getState().filter
         const insString = insurancePackage.map(element => element.label).join(',')
         const uri = `/api/hello?id=${type.value}&insurancePackage=${insString}&minAmount=${minAmount}&maxAmount=${maxAmount}`
-        console.log(uri)
         const data = await fetch(uri).then(
             res => res.json().then(
                 data => data))
-        console.log("Data = ", data)
         dispatch(setLoading(false))
-        dispatch(setCards(data))
+        dispatch(setCards(data.cards))
+        dispatch(setDisclosures(data.disclosureResult))
 
     })
 
