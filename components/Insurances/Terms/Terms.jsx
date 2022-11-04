@@ -14,6 +14,7 @@ export default function Terms() {
     const { tempTerms, tempBenefits } = useSelector(state => state.custom);
     const dispatch = useDispatch();
 
+
     return (
         <div className={classes.Terms}>
             <div className={classes.RowWrapper}>
@@ -68,15 +69,15 @@ export default function Terms() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {tempBenefits.map(item => {
+                                {tempBenefits.map((item, index) => {
                                     const { coverage_id, name, offer_id } = item;
                                     const idMap = item.sub_benefits.reduce((acc, curr) => {
                                         acc[curr.id] = curr.amount;
-                                        if (curr.id !== '1.1' || curr.id !== '1.2') console.log("Unknwon curr id");
+                                        if (+curr.id !== 1.1 && +curr.id !== 1.2) console.log("Unknwon curr id - ", curr.id);
                                         return acc;
                                     }, {})
-                                    return <tr key={coverage_id}>
-                                        <td>{coverage_id}</td>
+                                    return <tr key={coverage_id ?? index}>
+                                        <td>{coverage_id ?? index}</td>
                                         <td>{name} - {dependentMap[offer_id]}</td>
                                         <td>{idMap['1.1'] ?? <ImCross className={classes.CloseButton} />}</td>
                                         <td>{idMap['1.2'] ?? <ImCross className={classes.CloseButton} />}</td>

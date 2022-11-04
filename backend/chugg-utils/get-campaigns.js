@@ -55,9 +55,10 @@ export const getCampaignsFromFilters = async ({
     offersResult.forEach(entity => {
         const { benefits: { data: { benefits } } } = entity;
         benefits.forEach(element => {
-            benefitsMap[`${element.offer_id}__${element.coverage_id}`] = JSON.parse(JSON.stringify(element));
+            benefitsMap[`${element.offer_id}__${element.coverage_id ?? ''}`] = JSON.parse(JSON.stringify(element));
         });
     })
+
 
 
     summaryResult.offers.forEach(element => {
@@ -67,8 +68,9 @@ export const getCampaignsFromFilters = async ({
         ) {
             const coverageDetails = offersMap[element.name].coverage_pricing.map(element => coverageDetailsMap[element.coverage.coverage_id])
             const benefitsDetails = offersMap[element.name].coverage_pricing.map(item => {
-                const key = `${dependentMap[element.name]}__${item.coverage.coverage_id}`
-                return benefitsMap[key]
+                const key = `${dependentMap[element.name]}__${item.coverage.coverage_id ?? ''}`
+                const altKey = `${dependentMap[element.name]}__`
+                return benefitsMap[key] ?? benefitsMap[altKey]
             })
             cards.push({
                 insuranceName: summaryResult.name,
