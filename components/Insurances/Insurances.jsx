@@ -44,7 +44,7 @@ export default function Insurances() {
                 </Popup>
             )}
             <div className={classes.Insurances}>
-                {cards.map(card => <InsuranceCard {...card} key={card.insuranceName + card.insuranceType} />)}
+                {cards.map((card, index) => <InsuranceCard {...card} key={card.insuranceName + card.insuranceType + index} />)}
 
             </div>
 

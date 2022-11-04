@@ -39,14 +39,14 @@ export default function Terms() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {tempTerms.map(item => {
+                                {tempTerms.map((item, index) => {
                                     const { coverage_id } = item;
-                                    const subEntities = item.value.map(subEntity => <tr key={subEntity.name}>
+                                    const subEntities = item.value.map((subEntity, index) => <tr key={subEntity.name + index}>
                                         <td>{coverage_id}</td>
                                         <td>{subEntity.name}</td>
                                         <td>{subEntity.description}</td>
                                     </tr>)
-                                    return <React.Fragment key={coverage_id}>{subEntities}</React.Fragment>
+                                    return <React.Fragment key={coverage_id + index}>{subEntities}</React.Fragment>
                                 })}
                             </tbody>
                         </table>
@@ -71,11 +71,11 @@ export default function Terms() {
                             <tbody>
                                 {tempBenefits.map((item, index) => {
                                     const { coverage_id, name, offer_id } = item;
-                                    const idMap = item.sub_benefits.reduce((acc, curr) => {
+                                    const idMap = item?.sub_benefits?.reduce((acc, curr) => {
                                         acc[curr.id] = curr.amount;
                                         if (+curr.id !== 1.1 && +curr.id !== 1.2) console.log("Unknwon curr id - ", curr.id);
                                         return acc;
-                                    }, {})
+                                    }, {}) ?? {}
                                     return <tr key={coverage_id ?? index}>
                                         <td>{coverage_id ?? index}</td>
                                         <td>{name} - {dependentMap[offer_id]}</td>

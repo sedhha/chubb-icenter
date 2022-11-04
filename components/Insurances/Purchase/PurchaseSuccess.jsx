@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import { setPurchaseSuccess } from '../../../redux/slices/custom.slices';
+import { setDisclosures, setPurchaseSuccess, setShowPurchase, setShowTerms } from '../../../redux/slices/custom.slices';
 import classes from "./Purchase.module.css"
 
 
@@ -19,7 +19,11 @@ export default function Terms() {
             </div>
             <label>Your Purchase was successful!</label>
             <div className={classes.RowWrapperEnd}>
-                <button className={classes.Button} onClick={() => dispatch(setPurchaseSuccess(false))}>Close Window</button>
+                <button className={classes.Button} onClick={() => {
+                    dispatch(setPurchaseSuccess(false))
+                    dispatch(setShowPurchase(false))
+                    dispatch(setShowTerms(false))
+                }}>Close Window</button>
             </div>
         </div>
 

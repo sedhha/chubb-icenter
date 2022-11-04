@@ -1,7 +1,7 @@
 import React from 'react'
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { setPurchaseSuccess, setShowPurchase } from '../../../redux/slices/custom.slices';
+import { setPurchaseSuccess, setShowPurchase, setShowTerms } from '../../../redux/slices/custom.slices';
 import { setLoading } from '../../../redux/slices/filter.slices';
 import classes from "./Purchase.module.css"
 
@@ -10,10 +10,10 @@ import classes from "./Purchase.module.css"
 export default function Terms() {
 
     const { disclosures, name, email } = useSelector(state => state.custom);
-    const { loading } = useSelector(state => state.filter);
     const dispatch = useDispatch();
     const confirmPurchase = async () => {
         dispatch(setShowPurchase(false));
+        dispatch(setShowTerms(false));
         dispatch(setLoading(true));
         const geoData = await fetch("https://ipapi.co/json/").then(res => res.json().then(
             data => data));
@@ -36,7 +36,7 @@ export default function Terms() {
                 <h1 className={classes.PremiumAndPaymentDetails}>
                     Purchase Insurance
                 </h1>
-                <AiFillCloseCircle className={classes.CloseButton} onClick={() => setShowPurchase(false)} />
+                <AiFillCloseCircle className={classes.CloseButton} onClick={() => dispatch(setShowPurchase(false))} />
             </div>
             <div className={classes.InsuranceForm}>
                 <div className={classes.FormRow}>
