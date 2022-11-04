@@ -62,8 +62,8 @@ export const getCampaignsFromFilters = async ({
 
     summaryResult.offers.forEach(element => {
         if (insurancePackageFilters.includes(element.name)
-            && offersMap[element.name].cost.total >= Math.floor(minAmount)
-            && offersMap[element.name].cost.total <= Math.ceil(maxAmount)
+            && offersMap[element.name]?.cost?.total >= Math.floor(minAmount)
+            && offersMap[element.name]?.cost?.total <= Math.ceil(maxAmount)
         ) {
             const coverageDetails = offersMap[element.name].coverage_pricing.map(element => coverageDetailsMap[element.coverage.coverage_id])
             const benefitsDetails = offersMap[element.name].coverage_pricing.map(item => {
